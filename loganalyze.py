@@ -25,23 +25,19 @@ def analyze_user_activity(log_file_path: str) -> dict:
 
             total_users.add(user_id)
 
-            # นับจำนวน action
             if action in action_counts:
                 action_counts[action] += 1
             else:
                 action_counts[action] = 1
 
-            # รวมเวลาของแต่ละ user
             if user_id in user_activity_time:
                 user_activity_time[user_id] += duration
             else:
                 user_activity_time[user_id] = duration
 
-            # เก็บเวลาของ login
             if action == "login":
                 login_durations.append(duration)
 
-    # หา user ที่ active มากที่สุด
     most_active_user = None
 
     if user_activity_time:
@@ -50,7 +46,6 @@ def analyze_user_activity(log_file_path: str) -> dict:
             key=user_activity_time.get
         )
 
-    # ค่าเฉลี่ย session
     if login_durations:
         average_session_time = (
             sum(login_durations) / len(login_durations)
@@ -58,7 +53,6 @@ def analyze_user_activity(log_file_path: str) -> dict:
     else:
         average_session_time = 0.0
 
-    # เรียง action เหมือนโค้ดเดิม
     action_counts = dict(sorted(action_counts.items()))
 
     return {
